@@ -1,0 +1,30 @@
+# Node
+ui/node_modules/
+ui/dist/
+
+# Python
+*.py[cod]
+*$py.class
+__pycache__/
+**/__pycache__/
+backend/venv/
+backend/.venv/
+backend/*.egg-info/
+
+# Environment files
+.env
+*.env
+backend/.env
+ui/.env
+
+# Uploads (keep folder, ignore contents)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/
+venv
+
+reference/

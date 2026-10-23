@@ -45,3 +45,22 @@ class ItemUpdate(BaseModel):
     location: Optional[str] = Field(default=None, min_length=1, max_length=150)
     exchange_requirement: Optional[str] = Field(default=None, max_length=500)
 
+
+class ItemOut(BaseModel):
+    id: str
+    name: str
+    description: str
+    category_id: str
+    listing_type: ListingType
+    price: Optional[float] = None
+    condition: Condition
+    image_url: Optional[str] = None
+    location: str
+    exchange_requirement: Optional[str] = None
+    owner_id: str
+    owner_name: Optional[str] = None
+    category_name: Optional[str] = None
+    approval_status: ApprovalStatus
+    availability_status: AvailabilityStatus
+    created_at: datetime
+    updated_at: datetime

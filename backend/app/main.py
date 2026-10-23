@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
+from app.database import init_indexes
 from app.routes import health
 
 app = FastAPI(title="ReUseHub API")
@@ -21,6 +22,17 @@ Path(settings.upload_dir).mkdir(parents=True, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
 
 app.include_router(health.router, prefix="/api")
+
+
+@app.on_event("startup")
+async def on_startup():
+    try:
+        await init_indexes()
+    except Exception as exc:
+        print(
+            f"Warning: could not connect to MongoDB at startup ({exc}). "
+            "Ensure MongoDB is running and MONGODB_URI is correctly set."
+        )
 
 
 @app.get("/")

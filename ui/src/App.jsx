@@ -1,4 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 import ProtectedRoute from './components/ProtectedRoute'
 import LoginPage from './pages/public/LoginPage'
 import RegisterPage from './pages/public/RegisterPage'
@@ -8,6 +10,8 @@ import RegisterPage from './pages/public/RegisterPage'
 export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200">
+      <Navbar />
+
       <div className="flex-1">
         <Routes>
           {/* Public Routes */}
@@ -17,6 +21,7 @@ export default function App() {
         </Routes>
       </div>
 
+      <Footer />
     </div>
   )
 }

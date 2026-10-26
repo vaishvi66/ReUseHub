@@ -23,3 +23,28 @@ STUDENTS = [
 ]
 
 SAMPLE_ITEMS = [
+    # --- BOOKS ---
+    {
+        "name": "Introduction to Algorithms (CLRS 3rd Edition)",
+        "description": "Standard MIT Press algorithms textbook by Cormen, Leiserson, Rivest, Stein. Minimal pencil notes in dynamic programming and graph algorithms chapters. Very clean condition.",
+        "category": "Books",
+        "listing_type": "sell",
+        "price": 750,
+        "condition": "good",
+        "location": "Library Central Hall, 1st Floor",
+        "image_url": "https://images.unsplash.com/photo-1532012164546-f432f2e3777a?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 0,
+    },
+    {
+        "name": "Concepts of Physics (Vol 1 & 2 by H.C. Verma)",
+        "description": "Both volumes 1 and 2 in good condition. Helped me clear first-year engineering physics and mechanics fundamentals. Giving away completely free to any junior.",
+        "category": "Books",
+        "listing_type": "giveaway",
+        "price": None,
+        "condition": "good",
+        "location": "Hostel Block A, Common Room",
+        "image_url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 1,
+    },
+    {
+        "name": "Operating System Concepts (Silberschatz Dinosaur Book)",

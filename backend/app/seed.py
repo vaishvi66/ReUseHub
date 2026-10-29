@@ -72,3 +72,28 @@ SAMPLE_ITEMS = [
     {
         "name": "Head First Design Patterns",
         "description": "Best resource for software engineering interviews and object-oriented design. Explains Singleton, Observer, Decorator, and Factory with clear diagrams.",
+        "category": "Books",
+        "listing_type": "sell",
+        "price": 650,
+        "condition": "like_new",
+        "location": "Hostel Block B, Room 102",
+        "image_url": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 4,
+    },
+    {
+        "name": "Engineering Mechanics: Statics and Dynamics (Timoshenko)",
+        "description": "Prescribed textbook for 1st year mechanical and civil branches. Clear force diagrams, practice problems solved in pencil.",
+        "category": "Books",
+        "listing_type": "sell",
+        "price": 380,
+        "condition": "good",
+        "location": "Mechanical Workshop & Lab Gate",
+        "image_url": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 5,
+    },
+
+    # --- ELECTRONICS ---
+    {
+        "name": "Casio fx-991EX ClassWiz Scientific Calculator",
+        "description": "High-resolution natural textbook display with 552 functions including matrix, vector, integration, and equation solver. Allowed in university examinations. Comes with slide-on protective hard case.",
+        "category": "Electronics",

@@ -77,3 +77,17 @@ async def browse_items(
     return [await _attach_owner_name(serialize_id(i)) for i in items]
 
 
+@router.get("/mine", response_model=list[ItemOut])
+async def my_items(current_user: dict = Depends(get_current_student)):
+    items = await items_collection.find({"owner_id": current_user["id"]}).sort("created_at", -1).to_list(length=200)
+    return [await _attach_owner_name(serialize_id(i)) for i in items]
+
+
+@router.get("/{item_id}", response_model=ItemOut)
+async def get_item(item_id: str):
+    item = await items_collection.find_one({"_id": to_object_id(item_id)})
+    if not item or item["approval_status"] != "approved":
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
+    return await _attach_owner_name(serialize_id(item))
+
+

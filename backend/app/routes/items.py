@@ -91,3 +91,96 @@ async def get_item(item_id: str):
     return await _attach_owner_name(serialize_id(item))
 
 
+@router.post("", response_model=ItemOut, status_code=status.HTTP_201_CREATED)
+async def create_item(
+    name: str = Form(..., min_length=2, max_length=120),
+    description: str = Form(..., min_length=1, max_length=2000),
+    category_id: str = Form(...),
+    listing_type: ListingType = Form(...),
+    condition: Condition = Form(...),
+    location: str = Form(..., min_length=1, max_length=150),
+    price: Optional[float] = Form(None),
+    exchange_requirement: Optional[str] = Form(None),
+    image: Optional[UploadFile] = File(None),
+    current_user: dict = Depends(get_current_student),
+):
+    category = await categories_collection.find_one({"_id": to_object_id(category_id)})
+    if not category:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid category")
+
+    price, exchange_requirement = _validate_listing_fields(listing_type, price, exchange_requirement)
+
+    image_url = None
+    if image is not None and image.filename:
+        image_url = await save_item_image(image)
+
+    now = datetime.now(timezone.utc)
+    doc = {
+        "name": name,
+        "description": description,
+        "category_id": category_id,
+        "listing_type": listing_type,
+        "price": price,
+        "condition": condition,
+        "image_url": image_url,
+        "location": location,
+        "exchange_requirement": exchange_requirement,
+        "owner_id": current_user["id"],
+        "approval_status": "pending",
+        "availability_status": "available",
+        "created_at": now,
+        "updated_at": now,
+    }
+    result = await items_collection.insert_one(doc)
+    doc["_id"] = result.inserted_id
+    return await _attach_owner_name(serialize_id(doc))
+
+
+@router.put("/{item_id}", response_model=ItemOut)
+async def update_item(
+    item_id: str,
+    name: str = Form(..., min_length=2, max_length=120),
+    description: str = Form(..., min_length=1, max_length=2000),
+    category_id: str = Form(...),
+    listing_type: ListingType = Form(...),
+    condition: Condition = Form(...),
+    location: str = Form(..., min_length=1, max_length=150),
+    price: Optional[float] = Form(None),
+    exchange_requirement: Optional[str] = Form(None),
+    image: Optional[UploadFile] = File(None),
+    current_user: dict = Depends(get_current_student),
+):
+    oid = to_object_id(item_id)
+    item = await items_collection.find_one({"_id": oid})
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
+    if item["owner_id"] != current_user["id"]:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only edit your own listings")
+    if item["availability_status"] != "available":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Only available listings can be edited")
+
+    category = await categories_collection.find_one({"_id": to_object_id(category_id)})
+    if not category:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid category")
+
+    price, exchange_requirement = _validate_listing_fields(listing_type, price, exchange_requirement)
+
+    updates = {
+        "name": name,
+        "description": description,
+        "category_id": category_id,
+        "listing_type": listing_type,
+        "price": price,
+        "condition": condition,
+        "location": location,
+        "exchange_requirement": exchange_requirement,
+        "approval_status": "pending",
+        "updated_at": datetime.now(timezone.utc),
+    }
+    if image is not None and image.filename:
+        updates["image_url"] = await save_item_image(image)
+
+    await items_collection.update_one({"_id": oid}, {"$set": updates})
+    updated = await items_collection.find_one({"_id": oid})
+    return await _attach_owner_name(serialize_id(updated))
+

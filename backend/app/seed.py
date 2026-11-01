@@ -146,3 +146,28 @@ SAMPLE_ITEMS = [
         "price": 420,
         "condition": "like_new",
         "location": "Hostel Block B, Room 204",
+        "image_url": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 4,
+    },
+    {
+        "name": "Raspberry Pi 4 Model B (4GB RAM) with Case",
+        "description": "Quad-core 1.5GHz ARM Cortex-A72 with 4GB LPDDR4. Comes with acrylic transparent case, miniature cooling fan, and 32GB SanDisk Ultra MicroSD pre-flashed with Raspberry Pi OS.",
+        "category": "Electronics",
+        "listing_type": "sell",
+        "price": 2800,
+        "condition": "like_new",
+        "location": "IoT & Embedded Systems Lab",
+        "image_url": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 5,
+    },
+
+    # --- STUDY MATERIALS ---
+    {
+        "name": "DBMS & SQL Complete Handwritten Lecture Notes",
+        "description": "Extensive semester 4 notes prepared from faculty lectures and Korth. Indexed chapters on ER Modeling, Relational Algebra, B+ Trees, 1NF to BCNF Normalization, Transactions, and SQL Triggers.",
+        "category": "Study Materials",
+        "listing_type": "giveaway",
+        "price": None,
+        "condition": "like_new",
+        "location": "Reading Hall, 2nd Floor",
+        "image_url": "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=600&q=80",

@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import init_indexes
-from app.routes import health, items
+from app.routes import health, items, requests
 
 app = FastAPI(title="ReUseHub API")
 
@@ -23,6 +23,7 @@ app.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads"
 
 app.include_router(health.router, prefix="/api")
 app.include_router(items.router, prefix="/api")
+app.include_router(requests.router, prefix="/api")
 
 
 @app.on_event("startup")

@@ -16,3 +16,13 @@ async def run_tests():
         assert res.status_code == 200, f"Expected 200, got {res.status_code}: {res.text}"
         print("[PASS] Health check OK:", res.json())
 
+        print("\n--- 2. Testing Public Categories ---")
+        res = await client.get("/api/categories")
+        assert res.status_code == 200, f"Expected 200, got {res.status_code}"
+        categories = res.json()
+        print(f"[PASS] Found {len(categories)} categories: {[c['name'] for c in categories]}")
+        assert len(categories) > 0, "No categories returned"
+
+        print("\n--- 3. Testing Public Browse Items ---")
+        res = await client.get("/api/items")
+        assert res.status_code == 200, f"Expected 200, got {res.status_code}"

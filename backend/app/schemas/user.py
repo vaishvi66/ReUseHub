@@ -28,3 +28,36 @@ class StudentRegister(BaseModel):
         return v
 
 
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=1, max_length=72)
+
+    @field_validator("email", mode="before")
+    @classmethod
+    def normalize_email(cls, v: str) -> str:
+        return v.strip().lower() if isinstance(v, str) else v
+
+
+class UserOut(BaseModel):
+    id: str
+    full_name: Optional[str] = None
+    student_id: Optional[str] = None
+    college: Optional[str] = None
+    email: EmailStr
+    role: Role
+    verification_status: Optional[VerificationStatus] = None
+    is_active: bool
+    created_at: datetime
+    last_login_at: Optional[datetime] = None
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserOut
+
+
+class ProfileUpdate(BaseModel):
+    full_name: Optional[str] = Field(default=None, min_length=2, max_length=100)
+    college: Optional[str] = Field(default=None, min_length=1, max_length=150)
+

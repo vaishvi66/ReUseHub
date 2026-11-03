@@ -5,7 +5,7 @@ import { useCategoriesQuery } from '../../hooks/useCategoriesQuery'
 import { imageUrl } from '../../utils/imageUrl'
 import { PackageIcon } from '../../components/Icons'
 
-function MyListingsPage() {
+export default function MyListingsPage() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')

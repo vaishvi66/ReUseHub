@@ -43,3 +43,34 @@ async def list_requests(type: Optional[str] = Query(None, pattern="^(incoming|ou
     reqs = await requests_collection.find(query).sort("created_at", -1).to_list(length=200)
     return [serialize_id(await _enrich(r)) for r in reqs]
 
+
+@router.get("/{request_id}", response_model=RequestOut)
+async def get_request(request_id: str, current_user: dict = Depends(get_current_student)):
+    req = await _get_owned_request(request_id, current_user)
+    return serialize_id(await _enrich(req))
+
+
+@router.put("/{request_id}/accept", response_model=RequestOut)
+async def accept_request(request_id: str, current_user: dict = Depends(get_current_student)):
+    oid = to_object_id(request_id)
+    req = await requests_collection.find_one({"_id": oid})
+    if not req:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Request not found")
+    if req["owner_id"] != current_user["id"]:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only the item owner can accept requests")
+    if req["status"] != "pending":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Only pending requests can be accepted")
+
+    now = datetime.now(timezone.utc)
+    await requests_collection.update_one({"_id": oid}, {"$set": {"status": "accepted", "updated_at": now}})
+    await requests_collection.update_many(
+        {"item_id": req["item_id"], "status": "pending", "_id": {"$ne": oid}},
+        {"$set": {"status": "rejected", "updated_at": now}},
+    )
+    await items_collection.update_one(
+        {"_id": to_object_id(req["item_id"])}, {"$set": {"availability_status": "reserved", "updated_at": now}}
+    )
+
+    req = await requests_collection.find_one({"_id": oid})
+    return serialize_id(await _enrich(req))
+

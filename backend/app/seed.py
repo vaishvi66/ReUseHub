@@ -196,3 +196,28 @@ SAMPLE_ITEMS = [
         "image_url": "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80",
         "owner_index": 1,
     },
+    {
+        "name": "Digital Electronics Laminated Formula Cheat-Sheets",
+        "description": "Laminated 4-page quick reference sheet for boolean algebra theorems, 4-variable K-Maps, logic gates, master-slave flip-flops, and mod-N synchronous counters.",
+        "category": "Study Materials",
+        "listing_type": "giveaway",
+        "price": None,
+        "condition": "new",
+        "location": "ECE Department Library",
+        "image_url": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 2,
+    },
+
+    # --- FURNITURE ---
+    {
+        "name": "Ergonomic Breathable Mesh Study Chair",
+        "description": "Mid-back swivel chair with pneumatic height adjustment and breathable mesh backrest. 360-degree castor wheels. Selling because final semester is completed.",
+        "category": "Furniture",
+        "listing_type": "sell",
+        "price": 1100,
+        "condition": "good",
+        "location": "Hostel Block C, Room 114",
+        "image_url": "https://images.unsplash.com/photo-1580481077195-c3a8a30ef311?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 3,
+    },
+    {

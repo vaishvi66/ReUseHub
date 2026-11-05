@@ -10,7 +10,7 @@ import {
 } from '../../services/requests'
 import { MapPinIcon } from '../../components/Icons'
 
-function MyRequestsPage() {
+export default function MyRequestsPage() {
   const [tab, setTab] = useState('incoming')
   const [requests, setRequests] = useState([])
   const [loading, setLoading] = useState(true)

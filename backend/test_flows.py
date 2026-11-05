@@ -26,3 +26,12 @@ async def run_tests():
         print("\n--- 3. Testing Public Browse Items ---")
         res = await client.get("/api/items")
         assert res.status_code == 200, f"Expected 200, got {res.status_code}"
+        items = res.json()
+        print(f"[PASS] Found {len(items)} approved items publicly available")
+
+        print("\n--- 4. Testing Sustainability Dashboard ---")
+        res = await client.get("/api/dashboard/sustainability")
+        assert res.status_code == 200, f"Expected 200, got {res.status_code}"
+        sustainability = res.json()
+        print(f"[PASS] Sustainability metrics: {sustainability}")
+

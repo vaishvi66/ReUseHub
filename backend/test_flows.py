@@ -35,3 +35,12 @@ async def run_tests():
         sustainability = res.json()
         print(f"[PASS] Sustainability metrics: {sustainability}")
 
+        print("\n--- 5. Testing Admin Login ---")
+        res = await client.post("/api/auth/login", json={"email": "admin@reusehub.com", "password": "Admin@123"})
+        assert res.status_code == 200, f"Admin login failed: {res.text}"
+        admin_data = res.json()
+        admin_token = admin_data["access_token"]
+        admin_headers = {"Authorization": f"Bearer {admin_token}"}
+        print(f"[PASS] Admin logged in: {admin_data['user']['full_name']} ({admin_data['user']['role']})")
+
+        print("\n--- 6. Testing Admin Dashboard ---")

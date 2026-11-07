@@ -60,7 +60,7 @@ function getItemEcoBadge(item, categoryName = '') {
   return { text: 'Campus Reused', icon: <RefreshCwIcon className="w-3 h-3 text-emerald-300" /> }
 }
 
-function BrowsePage() {
+export default function BrowsePage() {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [search, setSearch] = useState('')
   const [listingType, setListingType] = useState('')

@@ -221,3 +221,28 @@ SAMPLE_ITEMS = [
         "owner_index": 3,
     },
     {
+        "name": "Foldable Wooden Bed Study Table with Tablet Slot",
+        "description": "Portable laptop lap desk with curved ergonomic front, cup holder, and tablet docking groove. Sturdy metal legs fold flat for easy storage under dorm bed.",
+        "category": "Furniture",
+        "listing_type": "sell",
+        "price": 320,
+        "condition": "like_new",
+        "location": "Girls Hostel Block 2, Reception",
+        "image_url": "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 4,
+    },
+    {
+        "name": "Modular 3-Tier Metal Dorm Storage Organizer",
+        "description": "Black powder-coated wire shelving unit. Keeps textbook stacks, stationary trays, and grooming kits organized in compact hostel rooms.",
+        "category": "Furniture",
+        "listing_type": "exchange",
+        "price": None,
+        "condition": "good",
+        "location": "Hostel Block A, Room 305",
+        "exchange_requirement": "Looking for an electric kettle or adjustable LED desk study lamp",
+        "image_url": "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 5,
+    },
+
+    # --- OTHER ---
+    {

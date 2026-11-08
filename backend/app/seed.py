@@ -246,3 +246,27 @@ SAMPLE_ITEMS = [
 
     # --- OTHER ---
     {
+        "name": "White Cotton Lab Coat (Size M) + Chemical Safety Goggles",
+        "description": "100% thick cotton knee-length white lab apron with 3 pockets, thoroughly washed and sanitised. Includes clear anti-fog safety eyewear for chemistry lab.",
+        "category": "Other",
+        "listing_type": "giveaway",
+        "price": None,
+        "condition": "good",
+        "location": "Chemistry Lab Building Entrance",
+        "image_url": "https://images.unsplash.com/photo-1584467735871-8e85353a8413?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 6,
+    },
+    {
+        "name": "Yonex Carbonex Carbon Badminton Racket with Cover",
+        "description": "Lightweight carbon graphite frame with isometric head shape, BG65 strings at 24 lbs tension. Fresh polyurethane grip. Great for evening campus court matches.",
+        "category": "Other",
+        "listing_type": "sell",
+        "price": 680,
+        "condition": "good",
+        "location": "Sports Complex Reception",
+        "image_url": "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 0,
+    },
+    {
+        "name": "Stainless Steel Electric Kettle (1.5L Capacity)",
+        "description": "Prestige 1500W rapid-boil cordless electric kettle with 360-degree swivel base and automatic shut-off. Essential companion for late night instant noodles and tea in hostel.",

@@ -270,3 +270,28 @@ SAMPLE_ITEMS = [
     {
         "name": "Stainless Steel Electric Kettle (1.5L Capacity)",
         "description": "Prestige 1500W rapid-boil cordless electric kettle with 360-degree swivel base and automatic shut-off. Essential companion for late night instant noodles and tea in hostel.",
+        "category": "Other",
+        "listing_type": "sell",
+        "price": 490,
+        "condition": "like_new",
+        "location": "Hostel Block B, Pantry",
+        "image_url": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80",
+        "owner_index": 1,
+    },
+]
+
+
+async def seed():
+    now = datetime.now(timezone.utc)
+
+    category_ids = {}
+    for name in CATEGORIES:
+        existing = await categories_collection.find_one({"name": name})
+        if existing:
+            category_ids[name] = str(existing["_id"])
+            continue
+        result = await categories_collection.insert_one({"name": name, "created_at": now})
+        category_ids[name] = str(result.inserted_id)
+    print(f"Categories ready: {list(category_ids.keys())}")
+
+    admin = await users_collection.find_one({"email": ADMIN["email"]})

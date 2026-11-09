@@ -8,6 +8,7 @@ import RegisterPage from './pages/public/RegisterPage'
 
 import MyListingsPage from './pages/student/MyListingsPage'
 import CreateListingPage from './pages/student/CreateListingPage'
+import ProfilePage from './pages/student/ProfilePage'
 
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
           <Route element={<ProtectedRoute allowedRoles={['student']} />}>
             <Route path="/my-listings" element={<MyListingsPage />} />
             <Route path="/create-listing" element={<CreateListingPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
 
         </Routes>

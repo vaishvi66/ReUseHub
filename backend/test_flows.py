@@ -44,3 +44,12 @@ async def run_tests():
         print(f"[PASS] Admin logged in: {admin_data['user']['full_name']} ({admin_data['user']['role']})")
 
         print("\n--- 6. Testing Admin Dashboard ---")
+        res = await client.get("/api/admin/dashboard", headers=admin_headers)
+        assert res.status_code == 200, f"Admin dashboard failed: {res.text}"
+        print(f"[PASS] Admin dashboard stats: {res.json()}")
+
+        print("\n--- 7. Testing Admin Students List ---")
+        res = await client.get("/api/admin/students", headers=admin_headers)
+        assert res.status_code == 200, f"Admin students failed: {res.text}"
+        students = res.json()
+        print(f"[PASS] Admin retrieved {len(students)} students")

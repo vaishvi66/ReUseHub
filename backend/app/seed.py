@@ -295,3 +295,28 @@ async def seed():
     print(f"Categories ready: {list(category_ids.keys())}")
 
     admin = await users_collection.find_one({"email": ADMIN["email"]})
+    if not admin:
+        await users_collection.insert_one(
+            {
+                "full_name": ADMIN["full_name"],
+                "student_id": None,
+                "college": None,
+                "email": ADMIN["email"],
+                "password_hash": hash_password(ADMIN["password"]),
+                "role": "admin",
+                "verification_status": None,
+                "is_active": True,
+                "created_at": now,
+                "updated_at": now,
+            }
+        )
+        print(f"Admin created: {ADMIN['email']} / {ADMIN['password']}")
+    else:
+        print("Admin already exists, skipping.")
+
+    student_ids = []
+    for s in STUDENTS:
+        existing = await users_collection.find_one({"email": s["email"]})
+        if existing:
+            student_ids.append(str(existing["_id"]))
+            continue

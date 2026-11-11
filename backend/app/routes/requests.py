@@ -74,3 +74,49 @@ async def accept_request(request_id: str, current_user: dict = Depends(get_curre
     req = await requests_collection.find_one({"_id": oid})
     return serialize_id(await _enrich(req))
 
+
+@router.put("/{request_id}/reject", response_model=RequestOut)
+async def reject_request(request_id: str, current_user: dict = Depends(get_current_student)):
+    oid = to_object_id(request_id)
+    req = await requests_collection.find_one({"_id": oid})
+    if not req:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Request not found")
+    if req["owner_id"] != current_user["id"]:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only the item owner can reject requests")
+    if req["status"] != "pending":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Only pending requests can be rejected")
+
+    await requests_collection.update_one(
+        {"_id": oid}, {"$set": {"status": "rejected", "updated_at": datetime.now(timezone.utc)}}
+    )
+    req = await requests_collection.find_one({"_id": oid})
+    return serialize_id(await _enrich(req))
+
+
+@router.put("/{request_id}/pickup", response_model=RequestOut)
+async def schedule_pickup(request_id: str, payload: PickupSchedule, current_user: dict = Depends(get_current_student)):
+    oid = to_object_id(request_id)
+    req = await requests_collection.find_one({"_id": oid})
+    if not req:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Request not found")
+    if req["owner_id"] != current_user["id"]:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only the item owner can schedule pickup")
+    if req["status"] != "accepted":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Request must be accepted before scheduling pickup")
+
+    await requests_collection.update_one(
+        {"_id": oid},
+        {
+            "$set": {
+                "status": "pickup_scheduled",
+                "pickup_location": payload.pickup_location,
+                "pickup_date": payload.pickup_date.isoformat(),
+                "pickup_time": payload.pickup_time.isoformat(timespec="minutes"),
+                "updated_at": datetime.now(timezone.utc),
+            }
+        },
+    )
+    req = await requests_collection.find_one({"_id": oid})
+    return serialize_id(await _enrich(req))
+
+

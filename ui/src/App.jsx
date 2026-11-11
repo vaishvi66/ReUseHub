@@ -8,6 +8,8 @@ import RegisterPage from './pages/public/RegisterPage'
 
 import MyListingsPage from './pages/student/MyListingsPage'
 import CreateListingPage from './pages/student/CreateListingPage'
+import MyRequestsPage from './pages/student/MyRequestsPage'
+import HistoryPage from './pages/student/HistoryPage'
 import ProfilePage from './pages/student/ProfilePage'
 
 
@@ -28,6 +30,8 @@ export default function App() {
           <Route element={<ProtectedRoute allowedRoles={['student']} />}>
             <Route path="/my-listings" element={<MyListingsPage />} />
             <Route path="/create-listing" element={<CreateListingPage />} />
+            <Route path="/my-requests" element={<MyRequestsPage />} />
+            <Route path="/history" element={<HistoryPage />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
 

@@ -120,3 +120,53 @@ async def schedule_pickup(request_id: str, payload: PickupSchedule, current_user
     return serialize_id(await _enrich(req))
 
 
+@router.put("/{request_id}/complete", response_model=RequestOut)
+async def complete_request(request_id: str, current_user: dict = Depends(get_current_student)):
+    req = await _get_owned_request(request_id, current_user)
+    if req["status"] not in ("accepted", "pickup_scheduled"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Request is not ready to be completed")
+
+    oid = req["_id"]
+    now = datetime.now(timezone.utc)
+    await requests_collection.update_one({"_id": oid}, {"$set": {"status": "completed", "updated_at": now}})
+    await items_collection.update_one(
+        {"_id": to_object_id(req["item_id"])}, {"$set": {"availability_status": "completed", "updated_at": now}}
+    )
+    req = await requests_collection.find_one({"_id": oid})
+    return serialize_id(await _enrich(req))
+
+
+@router.put("/{request_id}/reuse", response_model=RequestOut)
+async def mark_reused(request_id: str, current_user: dict = Depends(get_current_student)):
+    req = await _get_owned_request(request_id, current_user)
+    if req["status"] != "completed":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Only completed requests can be marked reused")
+
+    now = datetime.now(timezone.utc)
+    await items_collection.update_one(
+        {"_id": to_object_id(req["item_id"])}, {"$set": {"availability_status": "reused", "updated_at": now}}
+    )
+    await requests_collection.update_one({"_id": req["_id"]}, {"$set": {"updated_at": now}})
+    req = await requests_collection.find_one({"_id": req["_id"]})
+    return serialize_id(await _enrich(req))
+
+
+@router.put("/{request_id}/cancel", response_model=RequestOut)
+async def cancel_request(request_id: str, current_user: dict = Depends(get_current_student)):
+    oid = to_object_id(request_id)
+    req = await requests_collection.find_one({"_id": oid})
+    if not req:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Request not found")
+    if req["requester_id"] != current_user["id"]:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only the requester can cancel this request")
+    if req["status"] not in ("pending", "accepted", "pickup_scheduled"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="This request can no longer be cancelled")
+
+    now = datetime.now(timezone.utc)
+    await requests_collection.update_one({"_id": oid}, {"$set": {"status": "cancelled", "updated_at": now}})
+    if req["status"] in ("accepted", "pickup_scheduled"):
+        await items_collection.update_one(
+            {"_id": to_object_id(req["item_id"])}, {"$set": {"availability_status": "available", "updated_at": now}}
+        )
+    req = await requests_collection.find_one({"_id": oid})
+    return serialize_id(await _enrich(req))

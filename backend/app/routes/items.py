@@ -184,3 +184,71 @@ async def update_item(
     updated = await items_collection.find_one({"_id": oid})
     return await _attach_owner_name(serialize_id(updated))
 
+
+@router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_item(item_id: str, current_user: dict = Depends(get_current_student)):
+    oid = to_object_id(item_id)
+    item = await items_collection.find_one({"_id": oid})
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
+    if item["owner_id"] != current_user["id"]:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only delete your own listings")
+    if item["availability_status"] != "available":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Only available listings can be deleted")
+
+    await items_collection.delete_one({"_id": oid})
+    await requests_collection.delete_many({"item_id": item_id, "status": "pending"})
+
+
+@router.post("/{item_id}/request", status_code=status.HTTP_201_CREATED)
+async def request_item(
+    item_id: str,
+    request: Request,
+    current_user: dict = Depends(get_current_student),
+):
+    note = None
+    content_type = request.headers.get("content-type", "")
+    if "application/json" in content_type:
+        try:
+            body = await request.json()
+            note = body.get("note") if isinstance(body, dict) else None
+        except Exception:
+            note = None
+    else:
+        try:
+            form = await request.form()
+            note = form.get("note")
+        except Exception:
+            note = None
+
+    oid = to_object_id(item_id)
+    item = await items_collection.find_one({"_id": oid})
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
+    if item["owner_id"] == current_user["id"]:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You cannot request your own item")
+    if item["approval_status"] != "approved" or item["availability_status"] != "available":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="This item is not available for request")
+
+    existing = await requests_collection.find_one(
+        {"item_id": item_id, "requester_id": current_user["id"], "status": "pending"}
+    )
+    if existing:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You already have a pending request for this item")
+
+    now = datetime.now(timezone.utc)
+    doc = {
+        "item_id": item_id,
+        "requester_id": current_user["id"],
+        "owner_id": item["owner_id"],
+        "status": "pending",
+        "note": note,
+        "pickup_location": None,
+        "pickup_date": None,
+        "pickup_time": None,
+        "created_at": now,
+        "updated_at": now,
+    }
+    result = await requests_collection.insert_one(doc)
+    doc["_id"] = result.inserted_id
+    return serialize_id(doc)

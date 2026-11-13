@@ -2,10 +2,12 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ProtectedRoute from './components/ProtectedRoute'
+import BrowsePage from './pages/public/BrowsePage'
 import ItemDetailPage from './pages/public/ItemDetailPage'
 import LoginPage from './pages/public/LoginPage'
 import RegisterPage from './pages/public/RegisterPage'
 
+import StudentDashboardPage from './pages/student/DashboardPage'
 import MyListingsPage from './pages/student/MyListingsPage'
 import CreateListingPage from './pages/student/CreateListingPage'
 import MyRequestsPage from './pages/student/MyRequestsPage'
@@ -21,6 +23,8 @@ export default function App() {
       <div className="flex-1">
         <Routes>
           {/* Public Routes */}
+          <Route path="/" element={<BrowsePage />} />
+          <Route path="/browse" element={<BrowsePage />} />
           <Route path="/item/:id" element={<ItemDetailPage />} />
           <Route path="/items/:id" element={<ItemDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -28,6 +32,7 @@ export default function App() {
 
           {/* Student Protected Routes */}
           <Route element={<ProtectedRoute allowedRoles={['student']} />}>
+            <Route path="/dashboard" element={<StudentDashboardPage />} />
             <Route path="/my-listings" element={<MyListingsPage />} />
             <Route path="/create-listing" element={<CreateListingPage />} />
             <Route path="/my-requests" element={<MyRequestsPage />} />
@@ -35,6 +40,8 @@ export default function App() {
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
 
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
 

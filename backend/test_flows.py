@@ -53,3 +53,12 @@ async def run_tests():
         assert res.status_code == 200, f"Admin students failed: {res.text}"
         students = res.json()
         print(f"[PASS] Admin retrieved {len(students)} students")
+
+        print("\n--- 8. Testing Student Login (Asha) ---")
+        res = await client.post("/api/auth/login", json={"email": "asha@college.edu", "password": "Student@123"})
+        assert res.status_code == 200, f"Student login failed: {res.text}"
+        student_data = res.json()
+        student_token = student_data["access_token"]
+        student_headers = {"Authorization": f"Bearer {student_token}"}
+        print(f"[PASS] Student logged in: {student_data['user']['full_name']} (verification: {student_data['user']['verification_status']})")
+

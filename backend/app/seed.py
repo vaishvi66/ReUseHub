@@ -320,3 +320,27 @@ async def seed():
         if existing:
             student_ids.append(str(existing["_id"]))
             continue
+        result = await users_collection.insert_one(
+            {
+                "full_name": s["full_name"],
+                "student_id": s["student_id"],
+                "college": s["college"],
+                "email": s["email"],
+                "password_hash": hash_password(s["password"]),
+                "role": "student",
+                "verification_status": "approved",
+                "is_active": True,
+                "created_at": now,
+                "updated_at": now,
+            }
+        )
+        student_ids.append(str(result.inserted_id))
+    print(f"Students ready: {[s['email'] for s in STUDENTS]} (password: Student@123)")
+
+    inserted_count = 0
+    updated_count = 0
+
+    for item in SAMPLE_ITEMS:
+        cat_id = category_ids.get(item["category"])
+        owner_id = student_ids[item["owner_index"] % len(student_ids)]
+        

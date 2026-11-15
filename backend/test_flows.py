@@ -62,3 +62,13 @@ async def run_tests():
         student_headers = {"Authorization": f"Bearer {student_token}"}
         print(f"[PASS] Student logged in: {student_data['user']['full_name']} (verification: {student_data['user']['verification_status']})")
 
+        print("\n--- 9. Testing Student Dashboard ---")
+        res = await client.get("/api/dashboard/student", headers=student_headers)
+        assert res.status_code == 200, f"Student dashboard failed: {res.text}"
+        print(f"[PASS] Student dashboard stats: {res.json()}")
+
+        print("\n--- 10. Testing Student My Items ---")
+        res = await client.get("/api/items/mine", headers=student_headers)
+        assert res.status_code == 200, f"My items failed: {res.text}"
+        my_items = res.json()
+        print(f"[PASS] Student has {len(my_items)} listings")

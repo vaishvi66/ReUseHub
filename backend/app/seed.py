@@ -344,3 +344,28 @@ async def seed():
         cat_id = category_ids.get(item["category"])
         owner_id = student_ids[item["owner_index"] % len(student_ids)]
         
+        existing = await items_collection.find_one({"name": item["name"]})
+        if existing:
+            await items_collection.update_one(
+                {"_id": existing["_id"]},
+                {
+                    "$set": {
+                        "description": item["description"],
+                        "category_id": cat_id,
+                        "listing_type": item["listing_type"],
+                        "price": item.get("price"),
+                        "condition": item["condition"],
+                        "image_url": item.get("image_url"),
+                        "location": item["location"],
+                        "exchange_requirement": item.get("exchange_requirement"),
+                        "owner_id": owner_id,
+                        "approval_status": "approved",
+                        "availability_status": "available",
+                        "updated_at": now,
+                    }
+                },
+            )
+            updated_count += 1
+        else:
+            await items_collection.insert_one(
+                {

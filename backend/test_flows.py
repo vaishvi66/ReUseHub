@@ -72,3 +72,12 @@ async def run_tests():
         assert res.status_code == 200, f"My items failed: {res.text}"
         my_items = res.json()
         print(f"[PASS] Student has {len(my_items)} listings")
+
+        print("\n--- 11. Testing Student My Requests ---")
+        res = await client.get("/api/requests?type=incoming", headers=student_headers)
+        assert res.status_code == 200, f"My requests failed: {res.text}"
+        print(f"[PASS] Student incoming requests: {len(res.json())}")
+
+        print("\n--- 12. Testing Item Search & Filter ---")
+        res = await client.get("/api/items?search=casio")
+        assert res.status_code == 200, f"Search failed: {res.text}"

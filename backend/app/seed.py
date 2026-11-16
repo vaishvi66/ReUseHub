@@ -369,3 +369,28 @@ async def seed():
         else:
             await items_collection.insert_one(
                 {
+                    "name": item["name"],
+                    "description": item["description"],
+                    "category_id": cat_id,
+                    "listing_type": item["listing_type"],
+                    "price": item.get("price"),
+                    "condition": item["condition"],
+                    "image_url": item.get("image_url"),
+                    "location": item["location"],
+                    "exchange_requirement": item.get("exchange_requirement"),
+                    "owner_id": owner_id,
+                    "approval_status": "approved",
+                    "availability_status": "available",
+                    "created_at": now,
+                    "updated_at": now,
+                }
+            )
+            inserted_count += 1
+
+    total_items = await items_collection.count_documents({})
+    approved_items = await items_collection.count_documents({"approval_status": "approved"})
+    print(f"Seeding complete! Inserted: {inserted_count}, Updated: {updated_count}, Total Items: {total_items} (Approved: {approved_items})")
+
+
+if __name__ == "__main__":
+    asyncio.run(seed())

@@ -81,3 +81,12 @@ async def run_tests():
         print("\n--- 12. Testing Item Search & Filter ---")
         res = await client.get("/api/items?search=casio")
         assert res.status_code == 200, f"Search failed: {res.text}"
+        matched = res.json()
+        print(f"[PASS] Search for 'casio' matched {len(matched)} items")
+
+        print("\n==========================================")
+        print("ALL API ENDPOINTS & FLOWS PASSED TEST!")
+        print("==========================================")
+
+if __name__ == "__main__":
+    asyncio.run(run_tests())

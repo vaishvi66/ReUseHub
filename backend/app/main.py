@@ -9,7 +9,7 @@ from app.database import init_indexes
 from app.routes import (
     users,
 )
-from app.routes import auth, categories, health, items, requests
+from app.routes import admin, auth, categories, dashboard, health, items, reports, requests
 
 app = FastAPI(title="ReUseHub API")
 
@@ -30,6 +30,9 @@ app.include_router(users.router, prefix="/api")
 app.include_router(categories.router, prefix="/api")
 app.include_router(items.router, prefix="/api")
 app.include_router(requests.router, prefix="/api")
+app.include_router(reports.router, prefix="/api")
+app.include_router(admin.router, prefix="/api")
+app.include_router(dashboard.router, prefix="/api")
 
 
 @app.on_event("startup")

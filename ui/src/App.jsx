@@ -17,6 +17,12 @@ import MyRequestsPage from './pages/student/MyRequestsPage'
 import HistoryPage from './pages/student/HistoryPage'
 import ProfilePage from './pages/student/ProfilePage'
 
+import AdminDashboardPage from './pages/admin/AdminDashboardPage'
+import StudentsPage from './pages/admin/StudentsPage'
+import AdminItemsPage from './pages/admin/AdminItemsPage'
+import AdminRequestsPage from './pages/admin/AdminRequestsPage'
+import CategoriesPage from './pages/admin/CategoriesPage'
+import AdminReportsPage from './pages/admin/AdminReportsPage'
 
 export default function App() {
   return (
@@ -44,6 +50,16 @@ export default function App() {
             <Route path="/my-requests" element={<MyRequestsPage />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+          </Route>
+
+          {/* Admin Protected Routes */}
+          <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+            <Route path="/admin" element={<AdminDashboardPage />} />
+            <Route path="/admin/students" element={<StudentsPage />} />
+            <Route path="/admin/items" element={<AdminItemsPage />} />
+            <Route path="/admin/requests" element={<AdminRequestsPage />} />
+            <Route path="/admin/categories" element={<CategoriesPage />} />
+            <Route path="/admin/reports" element={<AdminReportsPage />} />
           </Route>
 
           {/* Fallback */}

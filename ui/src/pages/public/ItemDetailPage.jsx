@@ -128,7 +128,7 @@ export default function ItemDetailPage() {
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">{item.name}</h1>
 
             <p className="mt-3 text-2xl font-extrabold text-emerald-800 dark:text-emerald-400">
-              {item.listing_type === 'sell' && item.price ? `₹${item.price}` : 'Free'}
+              {item.listing_type === 'sell' && item.price ? `$${item.price}` : 'Free'}
             </p>
 
             {item.exchange_requirement && (

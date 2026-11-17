@@ -205,7 +205,7 @@ export default function StudentDashboardPage() {
                   <div className="min-w-0">
                     <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{item.name}</p>
                     <p className="text-[11px] text-slate-400 dark:text-slate-500 capitalize">
-                      {item.listing_type} &middot; {item.price ? `₹${item.price}` : 'Free'}
+                      {item.listing_type} &middot; {item.price ? `$${item.price}` : 'Free'}
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">

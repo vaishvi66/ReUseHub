@@ -6,9 +6,13 @@ from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, Uplo
 
 from app.database import categories_collection, items_collection, requests_collection, users_collection
 from app.middleware.auth import get_current_student
+from app.patterns.observer import NotificationObserver
+from app.patterns.subject import RequestSubject
+from app.patterns.upload_provider_factory import UploadProviderFactory
 from app.schemas.item import Condition, ItemOut, ListingType
 from app.utils.objectid import serialize_id, to_object_id
-from app.utils.uploads import save_item_image
+
+notification_observer = NotificationObserver()
 
 router = APIRouter(prefix="/items", tags=["items"])
 
@@ -112,7 +116,8 @@ async def create_item(
 
     image_url = None
     if image is not None and image.filename:
-        image_url = await save_item_image(image)
+        provider = await UploadProviderFactory.get_provider()
+        image_url = await provider.save(image)
 
     now = datetime.now(timezone.utc)
     doc = {
@@ -178,7 +183,8 @@ async def update_item(
         "updated_at": datetime.now(timezone.utc),
     }
     if image is not None and image.filename:
-        updates["image_url"] = await save_item_image(image)
+        provider = await UploadProviderFactory.get_provider()
+        updates["image_url"] = await provider.save(image)
 
     await items_collection.update_one({"_id": oid}, {"$set": updates})
     updated = await items_collection.find_one({"_id": oid})
@@ -251,4 +257,15 @@ async def request_item(
     }
     result = await requests_collection.insert_one(doc)
     doc["_id"] = result.inserted_id
+
+    subject = RequestSubject(
+        request_id=str(result.inserted_id),
+        item_id=item_id,
+        requester_id=current_user["id"],
+        owner_id=item["owner_id"],
+        requester_name=current_user.get("full_name", ""),
+    )
+    subject.attach(notification_observer)
+    await subject.notify("request_created")
+
     return serialize_id(doc)

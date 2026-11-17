@@ -5,10 +5,13 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from app.database import items_collection, requests_collection, users_collection
 from app.middleware.auth import get_current_student
+from app.patterns.observer import NotificationObserver
+from app.patterns.subject import RequestSubject
 from app.schemas.request import PickupSchedule, RequestOut
 from app.utils.objectid import serialize_id, to_object_id
 
 router = APIRouter(prefix="/requests", tags=["requests"])
+notification_observer = NotificationObserver()
 
 
 async def _enrich(req: dict) -> dict:
@@ -72,6 +75,13 @@ async def accept_request(request_id: str, current_user: dict = Depends(get_curre
     )
 
     req = await requests_collection.find_one({"_id": oid})
+
+    subject = RequestSubject(
+        request_id=str(oid), item_id=req["item_id"], requester_id=req["requester_id"], owner_id=req["owner_id"]
+    )
+    subject.attach(notification_observer)
+    await subject.notify("request_accepted")
+
     return serialize_id(await _enrich(req))
 
 
@@ -90,6 +100,13 @@ async def reject_request(request_id: str, current_user: dict = Depends(get_curre
         {"_id": oid}, {"$set": {"status": "rejected", "updated_at": datetime.now(timezone.utc)}}
     )
     req = await requests_collection.find_one({"_id": oid})
+
+    subject = RequestSubject(
+        request_id=str(oid), item_id=req["item_id"], requester_id=req["requester_id"], owner_id=req["owner_id"]
+    )
+    subject.attach(notification_observer)
+    await subject.notify("request_declined")
+
     return serialize_id(await _enrich(req))
 
 

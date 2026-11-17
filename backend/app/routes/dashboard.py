@@ -63,7 +63,7 @@ async def sustainability_stats():
         1,
     )
 
-    # Real rupee savings: sum of prices of all approved active listings
+    # Real dollar savings: sum of prices of all approved active listings
     approved_items = await items_collection.find({"approval_status": "approved"}).to_list(length=200)
     total_student_savings = sum(item.get("price") or 0 for item in approved_items)
 

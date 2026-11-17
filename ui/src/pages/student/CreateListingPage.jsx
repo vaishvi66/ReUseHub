@@ -152,7 +152,7 @@ export default function CreateListingPage() {
           {form.listing_type === 'sell' && (
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5" htmlFor="price">
-                Price (₹)
+                Price ($)
               </label>
               <input
                 id="price"

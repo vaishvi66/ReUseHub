@@ -147,12 +147,12 @@ stateDiagram-v2
 
 #### 1. Sell (`sell`)
 - **Purpose**: Student recovers partial investment on high-value items (textbooks, scientific calculators, drafting boards).
-- **Price**: Fixed rupee amount set by owner.
+- **Price**: Fixed dollar (CAD) amount set by owner.
 - **Payment**: Settled in-person via UPI or cash during physical handover. Zero commission taken by ReUseHub.
 
 #### 2. Giveaway (`giveaway`)
 - **Purpose**: Senior passing down materials to juniors for free.
-- **Price**: Automatically ₹0 / "Free Campus Gift".
+- **Price**: Automatically $0 / "Free Campus Gift".
 - **Impact**: Maximizes peer goodwill and campus zero-waste diversion.
 
 #### 3. Direct Exchange (`exchange`)

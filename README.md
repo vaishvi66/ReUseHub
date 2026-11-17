@@ -71,7 +71,7 @@ All student accounts use the password: `Student@123`
 
 ## 🌟 Key Platform Features
 - **Student ID & Institutional Email Verification**: Campus-only security perimeter.
-- **Three Listing Modes**: *Sell* (fixed ₹ via UPI/cash), *100% Free Giveaway*, and *Direct Academic Barter/Exchange*.
+- **Three Listing Modes**: *Sell* (fixed $ via cash/e-transfer), *100% Free Giveaway*, and *Direct Academic Barter/Exchange*.
 - **Live Sustainability Tracking**: Calculates kg of CO₂ avoided, e-waste prevented, and landfill volume diverted.
 - **Full Dark & Light Themes**: Accessible, persistent high-contrast interface.
 - **Designated Campus Pickup Zones**: In-person handshakes at libraries, student centers, and dorm gates.

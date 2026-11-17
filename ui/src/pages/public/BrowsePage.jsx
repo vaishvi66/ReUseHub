@@ -145,8 +145,8 @@ export default function BrowsePage() {
       name: 'Priya Sharma',
       dept: 'Computer Science, Batch of 2027',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80',
-      text: 'Saved over ₹4,200 on CLRS algorithms and operating systems textbooks in my 3rd semester. Met the senior right outside Central Library between lectures!',
-      tag: 'Saved ₹4,200',
+      text: 'Saved over $4,200 on CLRS algorithms and operating systems textbooks in my 3rd semester. Met the senior right outside Central Library between lectures!',
+      tag: 'Saved $4,200',
       rating: 5,
     },
     {
@@ -380,7 +380,7 @@ export default function BrowsePage() {
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
                       <span className="text-[11px] font-black text-white truncate">Casio fx-991EX</span>
-                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-sky-500/30 text-sky-300 border border-sky-400/30">Saved ₹600</span>
+                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-sky-500/30 text-sky-300 border border-sky-400/30">Saved $600</span>
                     </div>
                     <div className="flex items-center gap-1 mt-0.5">
                       <MapPinIcon className="w-3 h-3 text-sky-300 shrink-0" />
@@ -769,7 +769,7 @@ export default function BrowsePage() {
                       <div>
                         {item.listing_type === 'sell' && item.price ? (
                           <div className="flex items-baseline gap-1">
-                            <span className="text-lg font-black text-slate-900 dark:text-white tracking-tight">₹{item.price}</span>
+                            <span className="text-lg font-black text-slate-900 dark:text-white tracking-tight">${item.price}</span>
                             <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase">Fixed</span>
                           </div>
                         ) : item.listing_type === 'giveaway' ? (
@@ -986,7 +986,7 @@ export default function BrowsePage() {
               <div className="bg-white/5 border border-white/10 rounded-2xl p-3 backdrop-blur-md">
                 <div className="flex items-center gap-1.5 text-purple-300 text-xs font-bold">
                   <TrendingUpIcon className="w-4 h-4 text-purple-400" />
-                  <span>{sustainStats?.total_student_savings != null ? `₹${sustainStats.total_student_savings.toLocaleString('en-IN')}` : '₹10,720'}</span>
+                  <span>{sustainStats?.total_student_savings != null ? `$${sustainStats.total_student_savings.toLocaleString('en-CA')}` : '$10,720'}</span>
                 </div>
                 <p className="text-[11px] font-extrabold text-white mt-0.5">Student Savings</p>
                 <p className="text-[9.5px] text-purple-200/70">Direct peer savings</p>

@@ -8,7 +8,7 @@ export function titleCase(value) {
 
 export function formatPrice(price) {
   if (price === null || price === undefined) return 'Free'
-  return `₹${price}`
+  return `$${price}`
 }
 
 const BADGE_CLASS_MAP = {

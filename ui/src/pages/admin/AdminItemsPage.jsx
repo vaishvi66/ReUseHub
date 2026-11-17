@@ -102,7 +102,7 @@ export default function AdminItemsPage() {
                     <td className="py-4 px-4 text-slate-500 dark:text-slate-400">{categoryMap[item.category_id] || '-'}</td>
                     <td className="py-4 px-4 font-medium text-slate-700 dark:text-slate-300 capitalize">{item.listing_type}</td>
                     <td className="py-4 px-4 font-bold text-slate-800 dark:text-slate-200">
-                      {item.listing_type === 'sell' && item.price ? `₹${item.price}` : 'Free'}
+                      {item.listing_type === 'sell' && item.price ? `$${item.price}` : 'Free'}
                     </td>
                     <td className="py-4 px-4 text-slate-500 dark:text-slate-400">{item.owner_name || 'Student'}</td>
                     <td className="py-4 px-4">

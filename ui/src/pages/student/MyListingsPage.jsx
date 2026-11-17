@@ -128,7 +128,7 @@ export default function MyListingsPage() {
 
               <div className="p-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
                 <span className="text-sm font-black text-slate-900 dark:text-white">
-                  {item.listing_type === 'sell' && item.price ? `₹${item.price}` : 'Free'}
+                  {item.listing_type === 'sell' && item.price ? `$${item.price}` : 'Free'}
                 </span>
 
                 <div className="flex items-center gap-2">
